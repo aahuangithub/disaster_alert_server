@@ -28,7 +28,7 @@ const client = require('twilio')(accountSid, authToken);
 app.post('/text', function(req, res){
     client.messages 
       .create({ 
-         body: 'Hi, there was recently an earthquake nearby. Are you okay? (Sent from Aaron\'s Alexa)', 
+         body: 'Hi, I noticed that there was recently an earthquake nearby. Are you okay? (Sent from Aaron\'s Alexa)', 
          from: '+14153001679',       
          to: req.body.to 
        }) 
