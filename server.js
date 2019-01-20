@@ -32,9 +32,12 @@ app.post('/user/create', function (req, res) {
             res.status(202).send()
     })
 })
+
 app.post('/user/email', function (req, res) {
+    console.log('user email triggered')
     User.findOne({
-        email: req.body.email, function(err, user) {
+        email: req.body.email}, function(err, user) {
+            console.log(user, err)
             if (user)
                 res.send(user)
 
@@ -42,7 +45,7 @@ app.post('/user/email', function (req, res) {
                 res.status(400).send()
 
         }
-    })
+    )
 })
 
 app.get('/notify', function (req, res) {
