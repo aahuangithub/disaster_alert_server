@@ -33,9 +33,11 @@ app.post('/user/create', function(req, res){
         else
             res.status(202).send()
     })
-
 })
 
+app.post('/user/contacts', function(req, res) {
+
+})
 // debug route -- will return true if debugging
 app.post('/debug', function(req, res){
     res.send(JSON.stringify({success: true}))

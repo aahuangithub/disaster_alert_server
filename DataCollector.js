@@ -39,9 +39,9 @@ function isWithinRadius(radius, triggerLoc, eventLoc) {
 }
 
 function sendNotification(type, magnitude) {
-    if (type = 'earthquake') {
-        request(encodeURIComponent('api.notifymyecho.com/v1/NotifyMe?notification=' + "A magnitude " + magintude + ' earthquake was reported near your contact, Sam. Should I call them and make sure they are ok?' + '&accessCode=') + process.env.notifyAccessCode)
+    if (type == 'earthquake') {
+        request(encodeURIComponent('http://api.notifymyecho.com/v1/NotifyMe?notification=' + "A magnitude " + magnitude + ' earthquake was reported near your contact, Sam. Should I call them and make sure they are ok?' + '&accessCode=') + process.env.notifyAccessCode)
     } else {
-        request(encodeURIComponent('api.notifymyecho.com/v1/NotifyMe?notification=A fire was reported near your contact, Sam. Should I call them and make sure they are ok?' + '&accessCode=') + process.env.notifyAccessCode)
+        request(encodeURIComponent(`http://api.notifymyecho.com/v1/NotifyMe?notification=A ${type} was reported near your contact, Sam. Should I call them and make sure they are ok?&accessCode=`) + process.env.notifyAccessCode)
     }
 }
