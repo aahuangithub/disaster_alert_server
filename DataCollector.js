@@ -9,7 +9,7 @@ var responseObject = { latestEventsArray: [] }
     for (var i = 0; i < body.features.length; i++) {
         if (new Date().valueOf() - body.features[i].properties.time < 1440000) {
             console.log(body.features[i]);
-            sendNotification(sam)
+            sendNotification(body.features[i].properties.type,body.features[i].properties.mag)
             //responseObject.latestEventsArray.push({ type: body.features[i].properties.type, magnitude: body.features[i].properties.mag, location: { lat: body.features[i].geometry.coordinates[0], long: body.features[i].geometry.coordinates[1] } })
         }
     }
@@ -21,7 +21,7 @@ var responseObject = { latestEventsArray: [] }
             feed.items.forEach(function (entry) {
                 if (new Date().valueOf() - new Date(entry.isoDate).valueOf() < 900000000) {
                     console.log(entry);
-                    sendNotification(sam);
+                    sendNotification('fire',0);
                 }
             })
         })
@@ -31,16 +31,16 @@ var responseObject = { latestEventsArray: [] }
 
 
 function isWithinRadius(radius, triggerLoc, eventLoc) {
-    if (Math.sqrt(Math.pow(triggerLoc.Lat - eventLoc.lat, 2) + Math.pow(triggerLoc.Long - eventLoc.Long, 2)) <= radius) {
+    if (Math.sqrt(Math.pow(triggerLoc.Lat - eventLoc.Lat, 2) + Math.pow(triggerLoc.Long - eventLoc.Long, 2)) <= radius) {
         return true;
     } else {
         return false
     }
 }
 
-function sendNotification(authToken, type, magnitude) {
-    if (type == 'earthquake') {
-        request(encodeURIComponent('api.notifymyecho.com/v1/NotifyMe?notification=' + "A magnitude " + magnitude + ' earthquake was reported near your contact, Sam. Should I call them and make sure they are ok?' + '&accessCode=') + process.env.notifyAccessCode)
+function sendNotification(type, magnitude) {
+    if (type = 'earthquake') {
+        request(encodeURIComponent('api.notifymyecho.com/v1/NotifyMe?notification=' + "A magnitude " + magintude + ' earthquake was reported near your contact, Sam. Should I call them and make sure they are ok?' + '&accessCode=') + process.env.notifyAccessCode)
     } else {
         request(encodeURIComponent('api.notifymyecho.com/v1/NotifyMe?notification=A fire was reported near your contact, Sam. Should I call them and make sure they are ok?' + '&accessCode=') + process.env.notifyAccessCode)
     }
