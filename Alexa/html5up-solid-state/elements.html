@@ -51,15 +51,15 @@
 								<div class="row gtr-uniform">
 									<div class="col-6 col-12-xsmall">
 										<label for="demo-name">Contact's Name</label>
-										<input id="name" type="text" name="name" value="" />
+										<input id="namey" type="text" name="name" value="" />
 									</div>
 									<div class="col-6 col-12-xsmall">
 										<label for="demo-email">Phone Number</label>
-										<input id="phone" type="text" value="" />
+										<input id="phoney" type="text" value="" />
 									</div>
 									<div class="col-12">
 										<ul class="actions">
-											<li><button class="primary" id="submit" >Add Alert</button> </li>
+											<li><div class="primary" id="submit" >Add Alert</div> </li>
 											<li><input type="reset" value="Reset" /></li>
 										</ul>
 									</div>
@@ -119,7 +119,7 @@
 				map.addListener('click', function(e) {
 					placeMarkerAndPanTo(e.latLng, map);
 					console.log(e.latLng);
-					contctList.push({lat:e.latLng.lat(),lng:e.latLng.lng()})
+					contactList.push({lat:e.latLng.lat(),lng:e.latLng.lng()})
 				});
 			}
 
@@ -138,10 +138,9 @@
 				document.body.style.overflowY = "hidden";
 					document.getElementById("form_popup").style.visibility = "visible";
 					$("#submit").click((e)=>{
-						e.preventDefault();
-			            contactList[contactList.length - 1].phone = $("#phone").val()
+						
 						document.getElementById("form_popup").style.visibility = "hidden";
-						$.post('/user/contacts', JSON.stringify({name:$("#name").val(),phone:$("#phone").val(),lat:contactList[contactList.length - 1].lat,lng:contactList[contactList.length - 1].lng}))  .done(function() {
+						$.post('/user/contacts', JSON.stringify({name:$("#namey").val(),phone:$("#phoney").val(),lat:contactList[contactList.length - 1].lat,lng:contactList[contactList.length - 1].lng})).done(function() {
     alert( "Added Alert Zone" );
   })
   .fail(function(e) {
