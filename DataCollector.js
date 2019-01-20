@@ -16,7 +16,7 @@ request('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geoj
                     let contacts = body
                     contacts
                         .filter(o=> distance(o.lat, o.lng, feature.geometry.coordinates[0],  feature.geometry.coordinates[1]) <= 160.0)
-                        .map(o=>sendNotification('earthquake', properties.mag, o.name))
+                        .map(o=>sendNotification('earthquake', properties.mag, o.name, properties.place.replace("km"," kilometers");))
                 })
         }
     }
@@ -41,11 +41,11 @@ function isWithinRadiusKm(radius, triggerLoc, eventLoc) {
     return (distance(triggerLoc.Lat, triggerLoc.Long, eventLoc.Lat, eventLoc.Long) <= radius)
 }
 
-function sendNotification(type, magnitude, person) {
+function sendNotification(type, magnitude, person,location) {
     if (type == 'earthquake') {
         request('http://api.notifymyecho.com/v1/NotifyMe?notification=' +
             encodeURIComponent("A magnitude " +
-                magnitude + ` earthquake was reported near ${person}. Should I call them and make sure they are ok?`)
+                magnitude + ` earthquake was reported near ${person} ${location}. Should I call them and make sure they are ok?`)
             + '&accessCode=' +
             process.env.notifyAccessCode)
     } else {
