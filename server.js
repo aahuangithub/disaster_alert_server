@@ -20,6 +20,22 @@ mongoose.Promise = global.Promise;
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+//twilio
+const accountSid = process.env.twilioSid; 
+const authToken = process.env.twilioToken; 
+const client = require('twilio')(accountSid, authToken); 
+
+app.post('/text', function(req, res){
+    client.messages 
+      .create({ 
+         body: 'Hi, there was recently an earthquake nearby. Are you okay? (Sent from Aaron\'s Alexa)', 
+         from: '+14153001679',       
+         to: req.body.to 
+       }) 
+      .then(message => console.log(message.sid)) 
+      .done();
+    res.status(202).send()
+})
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, "Alexa", "html5up-solid-state", 'elements.html'))

@@ -41,14 +41,14 @@ function isWithinRadiusKm(radius, triggerLoc, eventLoc) {
     return (distance(triggerLoc.Lat, triggerLoc.Long, eventLoc.Lat, eventLoc.Long) <= radius)
 }
 
-function sendNotification(type, magnitude) {
+function sendNotification(type, magnitude, person) {
     if (type == 'earthquake') {
         request('http://api.notifymyecho.com/v1/NotifyMe?notification=' +
-            encodeURIComponent("A magnitude " + 
-                magnitude + ' earthquake was reported near your contact, Sam. Use the disaster alert skill to call them and make sure they are okay.') 
-                +'&accessCode=' + 
-                process.env.notifyAccessCode)
+            encodeURIComponent("A magnitude " +
+                magnitude + ` earthquake was reported near ${person}. Should I call them and make sure they are ok?`)
+            + '&accessCode=' +
+            process.env.notifyAccessCode)
     } else {
-        request(`http://api.notifymyecho.com/v1/NotifyMe?notification=${encodeURIComponent(`A ${type} was reported near your contact, Jamil. Should I call them and make sure they are ok?`)}&accessCode=` + process.env.notifyAccessCode)
+        request(`http://api.notifymyecho.com/v1/NotifyMe?notification=${encodeURIComponent(`A ${type} was reported near ${person}. Should I call them and make sure they are ok?`)}&accessCode=` + process.env.notifyAccessCode)
     }
-} 
+}
