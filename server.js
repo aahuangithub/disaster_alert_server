@@ -29,6 +29,9 @@ app.post('/test', function(req, res){
     awesome_instance.save(function (err) {
 });
 })
+app.post('/true', function(req, res){
+    res.send(JSON.stringify({success: true}))
+})
 if(!process.env.PORT)
     process.env.PORT = 3000
 app.listen(process.env.PORT, function(){console.log('now listening on '+process.env.PORT)})
