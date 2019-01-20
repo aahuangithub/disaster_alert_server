@@ -34,7 +34,17 @@ app.post('/user/create', function(req, res){
             res.status(202).send()
     })
 })
-
+app.get('/notify', function(req, res){
+    function sendNotification(type, magnitude) {
+        if (type == 'earthquake') {
+            request(encodeURIComponent('http://api.notifymyecho.com/v1/NotifyMe?notification=' + "A magnitude " + magnitude + ' earthquake was reported near your contact, Sam. Should I call them and make sure they are ok?' + '&accessCode=') + process.env.notifyAccessCode)
+        } else {
+            request(encodeURIComponent(`http://api.notifymyecho.com/v1/NotifyMe?notification=A ${type} was reported near your contact, Sam. Should I call them and make sure they are ok?&accessCode=`) + process.env.notifyAccessCode)
+        }
+    }
+    sendNotification('fire')
+    res.status(200).send()
+})
 app.post('/user/contacts', function(req, res) {
 
 })

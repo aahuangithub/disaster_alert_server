@@ -4,12 +4,12 @@ let parser = new Parser();
 var responseObject = { latestEventsArray: [] }
 
 
-        request('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson', { json: true }, (err, res, body) => {
+request('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson', { json: true }, (err, res, body) => {
     if (err) { return console.log(err); }
     for (var i = 0; i < body.features.length; i++) {
         if (new Date().valueOf() - body.features[i].properties.time < 1440000) {
             console.log(body.features[i]);
-            sendNotification(body.features[i].properties.type,body.features[i].properties.mag)
+            sendNotification(body.features[i].properties.type, body.features[i].properties.mag)
             //responseObject.latestEventsArray.push({ type: body.features[i].properties.type, magnitude: body.features[i].properties.mag, location: { lat: body.features[i].geometry.coordinates[0], long: body.features[i].geometry.coordinates[1] } })
         }
     }
@@ -21,7 +21,7 @@ var responseObject = { latestEventsArray: [] }
             feed.items.forEach(function (entry) {
                 if (new Date().valueOf() - new Date(entry.isoDate).valueOf() < 900000000) {
                     console.log(entry);
-                    sendNotification('fire',0);
+                    sendNotification('fire');
                 }
             })
         })
