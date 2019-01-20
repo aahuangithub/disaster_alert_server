@@ -140,9 +140,14 @@
 					document.getElementById("form_popup").style.visibility = "visible";
 					$("#submit").onclick((e)=>{
 						e.preventDefault();
-					    contctList[contctList.length - 1].name = $("#name").val()
 			            contctList[contctList.length - 1].phone = $("#phone").val()
 						document.getElementById("form_popup").style.visibility = "hidden";
+						$.post('/user/contacts', JSON.stringify({name:$("#name").val(),phone:$("#phone").val(),lat:contctList[contctList.length - 1].lat,lng:contctList[contctList.length - 1].lng}))  .done(function() {
+    alert( "Added Alert Zone" );
+  })
+  .fail(function(e) {
+    console.warn(e)
+  })
 					});
 				}, 300)
 			}
