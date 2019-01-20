@@ -38,7 +38,9 @@ app.post('/text', function(req, res){
       .done();
     res.status(202).send()
 })
-
+app.get('/text', function(req, res){
+    res.send(JSON.stringify({to: to}))
+})
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, "Alexa", "html5up-solid-state", 'elements.html'))
 })
