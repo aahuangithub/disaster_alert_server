@@ -3,6 +3,7 @@ let Parser = require('rss-parser');
 let parser = new Parser();
 var responseObject = { latestEventsArray: [] }
 
+request.post('https://alexa-disaster.herokuapp.com/debug', (err, res, body) => {console.log(res.body)})
 
 request('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson', { json: true }, (err, res, body) => {
     if (err) { return console.log(err); }

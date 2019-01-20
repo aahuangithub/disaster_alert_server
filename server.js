@@ -19,9 +19,6 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 
-app.get('/test', function(req, res){
-    res.send({"success": true})
-})
 app.get('/', function(req, res){
     res.sendFile(path.join(__dirname, "Alexa", "html5up-solid-state", 'elements.html'))
 })
@@ -35,6 +32,15 @@ app.post('/user/create', function(req, res){
             res.status(202).send()
     })
 })
+app.get('/user/email', function(req, res){
+    User.findOne({email: req.body.email, function(err, user){
+        if(err)
+            res.status(400).send()
+        else
+            res.send(user)
+    }})
+})
+
 app.get('/notify', function(req, res){
     function sendNotification(type, magnitude) {
         if (type == 'earthquake') {
@@ -55,6 +61,7 @@ app.post('/user/contacts', function(req, res) {
 })
 // debug route -- will return true if debugging
 app.post('/debug', function(req, res){
+    console.log('the debug route was called with post')
     res.send(JSON.stringify({success: true}))
 })
 
