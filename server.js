@@ -39,8 +39,16 @@ app.post('/text', function(req, res){
     res.status(202).send()
 })
 app.get('/text', function(req, res){
-    res.send(JSON.stringify({to: to}))
-})
+    client.messages 
+    .create({ 
+       body: 'Hi, I noticed that there was recently an earthquake nearby. Are you okay? (Sent from Aaron\'s Alexa)', 
+       from: '+14153001679',       
+       to: to.length>0? to : req.body.to 
+     }) 
+    .then(message => console.log(message.sid)) 
+    .done();
+  res.status(202).send()}
+  )
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, "Alexa", "html5up-solid-state", 'elements.html'))
 })
