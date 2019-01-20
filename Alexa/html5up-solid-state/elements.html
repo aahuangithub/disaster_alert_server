@@ -59,7 +59,7 @@
 									</div>
 									<div class="col-12">
 										<ul class="actions">
-											<li><input type="submit" value="Add Alert" class="primary" id="submit" /> </li>
+											<li><button class="primary" id="submit" >Add Alert</button> </li>
 											<li><input type="reset" value="Reset" /></li>
 										</ul>
 									</div>
@@ -118,7 +118,7 @@
 				});
 				map.addListener('click', function(e) {
 					placeMarkerAndPanTo(e.latLng, map);
-					console.log(latLng);
+					console.log(e.latLng);
 					contctList.push({Lat:latLng.latitude})
 				});
 			}
@@ -131,10 +131,10 @@
 				});
 				map.panTo(latLng);
 				window.scrollTo({
-  top: document.body.scrollHeight,
-  left: 0,
-  behavior: 'smooth'
-});
+  					top: document.body.scrollHeight,
+  					left: 0,
+  					behavior: 'smooth'
+				});
 				document.body.style.overflowY = "hidden";
 				setTimeout(() => {
 					document.getElementById("form_popup").style.visibility = "visible";
