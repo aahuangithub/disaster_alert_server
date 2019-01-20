@@ -119,7 +119,7 @@
 				map.addListener('click', function(e) {
 					placeMarkerAndPanTo(e.latLng, map);
 					console.log(e.latLng);
-					contctList.push({Lat:latLng.latitude})
+					contctList.push({lat:e.latLng.lat(),lng:e.latLng.lng()})
 				});
 			}
 
