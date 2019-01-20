@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const path = require('path')
 const request = require('request')
+const distance = require('gps-distance')
 app.use(express.static('./'))
 app.use(express.json())
 
@@ -78,11 +79,15 @@ app.get('/simulate', function(req, res){
 })
 app.post('/simulate', function(req, res){ // this route will simulate an earthquake
     let newEarthquake = {magnitude: req.body.magnitude, lat: req.body.lat, lng: req.body.lng}
-    setInterval(function(){ // TODO: get user contacts
-        // get users
+    setInterval(function(){ 
+        Contact.find({}).then(function (users) {
+            users
+                .filter(o=> distance(o.lat, o.lng, req.body.lat, req.body.lng) <= 160.0)
+                .map(o=>sendNotification('earthquake', req.body.magnitude, o.name))
+        });
+    
         // from users get all close enough
         // send notifications after filtering array of those close enough
-        sendNotification('earthquake', req.body.magnitude)
     }, 30000)
     res.status(200).send()
 }) 
