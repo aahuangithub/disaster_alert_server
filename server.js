@@ -32,7 +32,7 @@ app.post('/text', function(req, res){
       .create({ 
          body: 'Hi, I noticed that there was recently an earthquake nearby. Are you okay? (Sent from Aaron\'s Alexa)', 
          from: '+14153001679',       
-         to: to.length>0? to : req.body.to 
+         to: to.length>0? to : process.env.phoneNum
        }) 
       .then(message => console.log(message.sid)) 
       .done();
