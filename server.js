@@ -1,10 +1,11 @@
 const express = require('express')
 const app = express()
 const path = require('path')
+
 const User = require('./models/User')
 const Contact = require('./models/Contact')
+const [dbuser, dbpw] = [process.env.dbuser, process.env.dbpw]
 
-const [dbuser, dbpw] = ['aahuang', 'mlabmlab1']
 app.use(express.static('./'))
 app.use(express.json())
 
@@ -32,6 +33,7 @@ app.post('/test', function(req, res){
 app.post('/true', function(req, res){
     res.send(JSON.stringify({success: true}))
 })
-if(!process.env.PORT)
-    process.env.PORT = 3000
+
+// sets up the server
+if(!process.env.PORT) process.env.PORT = 3000
 app.listen(process.env.PORT, function(){console.log('now listening on '+process.env.PORT)})

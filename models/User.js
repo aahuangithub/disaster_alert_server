@@ -4,8 +4,8 @@ const Contact = require('./Contact.js')
 
 let User = new Schema({
     email: {type: String},
-    id: {type: String},
-    
+    userid: {type: String},
+    contacts: []
 });
 
 
