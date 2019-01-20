@@ -1,14 +1,14 @@
+//express setup
 const express = require('express')
 const app = express()
 const path = require('path')
-
-const User = require('./models/User')
-const Contact = require('./models/Contact')
-const [dbuser, dbpw] = [process.env.dbuser, process.env.dbpw]
-
 app.use(express.static('./'))
 app.use(express.json())
 
+//db stuff
+const User = require('./models/User')
+const Contact = require('./models/Contact')
+const [dbuser, dbpw] = [process.env.dbuser, process.env.dbpw]
 const mongoose = require('mongoose');
 let dev_db_url = `mongodb://${dbuser}:${dbpw}@ds161794.mlab.com:61794/disaster`
 let mongoDB = process.env.MONGODB_URI || dev_db_url;
@@ -17,20 +17,27 @@ mongoose.Promise = global.Promise;
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+
 app.get('/test', function(req, res){
     res.send({"success": true})
 })
 app.get('/', function(req, res){
     res.sendFile(path.join(__dirname, "Alexa", "html5up-solid-state", 'elements.html'))
 })
-app.post('/test', function(req, res){
-    // Create an instance of model SomeModel
-    var awesome_instance = new User({ email: 'awesome', id:'test', contacts: [] });
 
+app.post('/user/create', function(req, res){
+    var awesome_instance = new User({ email: req.body.email, userid: req.body.id, contacts: [] });
     awesome_instance.save(function (err) {
-});
+        if(err) 
+            res.status(500).send()
+        else
+            res.status(202).send()
+    })
+
 })
-app.post('/true', function(req, res){
+
+// debug route -- will return true if debugging
+app.post('/debug', function(req, res){
     res.send(JSON.stringify({success: true}))
 })
 
