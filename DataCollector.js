@@ -40,10 +40,10 @@ function sendNotification(type, magnitude) {
     if (type == 'earthquake') {
         request('http://api.notifymyecho.com/v1/NotifyMe?notification=' +
             encodeURIComponent("A magnitude " + 
-                magnitude + ' earthquake was reported near your contact, Sam. Should I call them and make sure they are ok?') 
+                magnitude + ' earthquake was reported near your contact, Sam. Open Disaster Alert to call them and make sure they are okay') 
                 +'&accessCode=' + 
                 process.env.notifyAccessCode)
     } else {
-        request(`http://api.notifymyecho.com/v1/NotifyMe?notification=${encodeURIComponent(`A ${type} was reported near your contact, Sam. Should I call them and make sure they are ok?`)}&accessCode=` + process.env.notifyAccessCode)
+        request(`http://api.notifymyecho.com/v1/NotifyMe?notification=${encodeURIComponent(`A ${type} was reported near your contact, Sam. Open Disaster Alert to call them and make sure they are okay`)}&accessCode=` + process.env.notifyAccessCode)
     }
 } 
