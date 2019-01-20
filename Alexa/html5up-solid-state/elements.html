@@ -102,13 +102,17 @@ document.body.style.overflowY = 'auto';
 					$.ajax({
 						type: "POST",
 						url: "/user/email",
-						data: "{email:" + $("#email_input").val() + "}",
+						data: JSON.Stringify({email:$("#email_input").val()}),
 						contentType: "application/json; charset=utf-8",
 						dataType: "json",
 						success: function(msg) {
 							console.log(msg)
 							email = $("#email_input").val();
 							document.getElementById("email_picker").style.display = "none";
+						}
+						error: function(msg) {
+							console.log(msg)
+							
 						}
 					});
 
