@@ -32,7 +32,7 @@ app.post('/user/create', function(req, res){
             res.status(202).send()
     })
 })
-app.get('/user/email', function(req, res){
+app.post('/user/email', function(req, res){
     User.findOne({email: req.body.email, function(err, user){
         if(err)
             res.status(400).send()
