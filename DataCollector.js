@@ -1,6 +1,7 @@
 const request = require('request');
 let Parser = require('rss-parser');
 let parser = new Parser();
+var distance = require('gps-distance');
 var responseObject = { latestEventsArray: [] }
 
 request.post('https://alexa-disaster.herokuapp.com/debug', (err, res, body) => {console.log(res.body)})
@@ -31,12 +32,8 @@ request('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geoj
 });
 
 
-function isWithinRadius(radius, triggerLoc, eventLoc) {
-    if (Math.sqrt(Math.pow(triggerLoc.Lat - eventLoc.Lat, 2) + Math.pow(triggerLoc.Long - eventLoc.Long, 2)) <= radius) {
-        return true;
-    } else {
-        return false
-    }
+function isWithinRadiusKm(radius, triggerLoc, eventLoc) {
+    return (distance(triggerLoc.Lat, triggerLoc.Long, eventLoc.Lat, eventLoc.Long) <= radius)
 }
 
 function sendNotification(type, magnitude) {
