@@ -140,7 +140,7 @@
 					$("#submit").click((e)=>{
 						
 						document.getElementById("form_popup").style.visibility = "hidden";
-						var contact = JSON.stringify({name:$("#namey").val(),phone:$("#phoney").val(),lat:contactList[contactList.length - 1].lat,lng:contactList[contactList.length - 1].lng})
+						var contact = {name:$("#namey").val(),phone:$("#phoney").val(),lat:contactList[contactList.length - 1].lat,lng:contactList[contactList.length - 1].lng}
 						console.log(contact)
 						$.post('/user/contacts', contact).done(function() {
     alert( "Added Alert Zone" );
