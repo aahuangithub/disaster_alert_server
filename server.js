@@ -113,8 +113,7 @@ app.post('/simulate', function(req, res){ // this route will simulate an earthqu
     setInterval(function(){ 
         Contact.find({}).then(function (users) {
             users
-                .filter(o=> distance(o.lat, o.lng, req.body.lat, req.body.lng) != 160.0)
-                .map(o=>{to=o.phone; sendNotification('earthquake', req.body.magnitude, o.name)})
+                .map(o=>{try{to=o.phone; sendNotification('earthquake', req.body.magnitude, o.name)}catch(e){}})
         });
     
         // from users get all close enough
