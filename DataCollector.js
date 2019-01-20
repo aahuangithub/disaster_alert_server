@@ -37,7 +37,7 @@ function isWithinRadiusKm(radius, triggerLoc, eventLoc) {
 }
 
 function sendNotification(type, magnitude) {
-    if (type == 'earthquake' && magnitude >= 5.0) {
+    if (type == 'earthquake') {
         request('http://api.notifymyecho.com/v1/NotifyMe?notification=' +
             encodeURIComponent("A magnitude " + 
                 magnitude + ' earthquake was reported near your contact, Sam. Should I call them and make sure they are ok?') 

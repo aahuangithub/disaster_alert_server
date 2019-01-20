@@ -19,52 +19,56 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, "Alexa", "html5up-solid-state", 'elements.html'))
 })
 
-app.post('/user/create', function(req, res){
+app.post('/user/create', function (req, res) {
     var awesome_instance = new User({ email: req.body.email, userid: req.body.id, contacts: [] });
     awesome_instance.save(function (err) {
-        if(err) 
+        if (err)
             res.status(500).send()
         else
             res.status(202).send()
     })
 })
-app.post('/user/email', function(req, res){
-    User.findOne({email: req.body.email, function(err, user){
-        if(err)
-            res.status(400).send()
-        else
-            res.send(user)
-    }})
+app.post('/user/email', function (req, res) {
+    User.findOne({
+        email: req.body.email, function(err, user) {
+            if (user)
+                res.send(user)
+
+            else
+                res.status(400).send()
+
+        }
+    })
 })
 
-app.get('/notify', function(req, res){
+app.get('/notify', function (req, res) {
     function sendNotification(type, magnitude) {
         if (type == 'earthquake') {
             request('http://api.notifymyecho.com/v1/NotifyMe?notification=' +
-                encodeURIComponent("A magnitude " + 
-                    magnitude + ' earthquake was reported near your contact, Sam. Should I call them and make sure they are ok?') 
-                    +'&accessCode=' + 
-                    process.env.notifyAccessCode)
+                encodeURIComponent("A magnitude " +
+                    magnitude + ' earthquake was reported near your contact, Sam. Should I call them and make sure they are ok?')
+                + '&accessCode=' +
+                process.env.notifyAccessCode)
         } else {
             request(`http://api.notifymyecho.com/v1/NotifyMe?notification=${encodeURIComponent(`A ${type} was reported near your contact, Sam. Should I call them and make sure they are ok?`)}&accessCode=` + process.env.notifyAccessCode)
         }
-    }    
+    }
     sendNotification('fire')
     res.status(200).send()
 })
-app.post('/user/contacts', function(req, res) {
+app.post('/user/contacts', function (req, res) {
 
 })
 // debug route -- will return true if debugging
-app.post('/debug', function(req, res){
+app.post('/debug', function (req, res) {
     console.log('the debug route was called with post')
-    res.send(JSON.stringify({success: true}))
+    res.send(JSON.stringify({ success: true }))
 })
 
 // sets up the server
-if(!process.env.PORT) process.env.PORT = 3000
-app.listen(process.env.PORT, function(){console.log('now listening on '+process.env.PORT)})
+if (!process.env.PORT) process.env.PORT = 3000
+app.listen(process.env.PORT, function () { console.log('now listening on ' + process.env.PORT) })
