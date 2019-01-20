@@ -130,7 +130,11 @@
 					map: map
 				});
 				map.panTo(latLng);
-				document.scrollTo(0, 100000);
+				window.scrollTo({
+  top: document.body.scrollHeight,
+  left: 0,
+  behavior: 'smooth'
+});
 				document.body.style.overflowY = "hidden";
 				setTimeout(() => {
 					document.getElementById("form_popup").style.visibility = "visible";
@@ -140,7 +144,6 @@
 			            contctList[contctList.length - 1].phone = $("#phone").val()
 						document.getElementById("form_popup").style.visibility = "hidden";
 					});
-
 				}, 300)
 			}
 			
