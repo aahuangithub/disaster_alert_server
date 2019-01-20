@@ -32,7 +32,11 @@
 				</div>
 
 			</header>
-
+			<style>
+				* {
+					transition: 0.25s all;
+				}
+			</style>
 			<!-- Content -->
 			<div class="wrapper">
 				<div class="inner">
@@ -102,7 +106,7 @@
 					.done(function(msg) {
 							console.log(msg)
 							email = $("#email_input").val();
-							document.getElementById("email_picker").style.display = "none";
+							$('#email_picker').fadeOut();
 						}) // let's assume the server will never fail
 				}
 			});

@@ -9,6 +9,7 @@ app.use(express.json())
 //db stuff
 const User = require('./models/User')
 const Contact = require('./models/Contact')
+const Earthquake = require('./models/Earthquake')
 const [dbuser, dbpw] = [process.env.dbuser, process.env.dbpw]
 const mongoose = require('mongoose');
 let dev_db_url = `mongodb://${dbuser}:${dbpw}@ds161794.mlab.com:61794/disaster`
@@ -49,23 +50,43 @@ app.post('/user/email', function (req, res) {
 })
 
 app.get('/notify', function (req, res) {
-    function sendNotification(type, magnitude) {
-        if (type == 'earthquake') {
-            request('http://api.notifymyecho.com/v1/NotifyMe?notification=' +
-                encodeURIComponent("A magnitude " +
-                    magnitude + ' earthquake was reported near your contact, Sam. Should I call them and make sure they are ok?')
-                + '&accessCode=' +
-                process.env.notifyAccessCode)
-        } else {
-            request(`http://api.notifymyecho.com/v1/NotifyMe?notification=${encodeURIComponent(`A ${type} was reported near your contact, Sam. Should I call them and make sure they are ok?`)}&accessCode=` + process.env.notifyAccessCode)
-        }
-    }
     sendNotification('fire')
     res.status(200).send()
 })
-app.post('/user/contacts', function (req, res) {
-
+function sendNotification(type, magnitude, person) {
+    if (type == 'earthquake') {
+        request('http://api.notifymyecho.com/v1/NotifyMe?notification=' +
+            encodeURIComponent("A magnitude " +
+                magnitude + ` earthquake was reported near ${person}. Should I call them and make sure they are ok?`)
+            + '&accessCode=' +
+            process.env.notifyAccessCode)
+    } else {
+        request(`http://api.notifymyecho.com/v1/NotifyMe?notification=${encodeURIComponent(`A ${type} was reported near ${person}. Should I call them and make sure they are ok?`)}&accessCode=` + process.env.notifyAccessCode)
+    }
+}
+app.get('/user/contacts', function (req, res) { // this route will get all contacts (prolly filter out clientside for now)
+    Contact.find({}).then(function (users) {
+        res.send(users);
+    });
 })
+app.post('/user/contacts', function(req, res){ // this route will add a new contact into the contacts array 
+    let newContact = new Contact({name: req.body.name, lat: req.body.lat, lng: req.body.lng, phone: req.body.phone})
+    newContact.save(function(err){if(err){res.status(500).send()}else{res.status(202).send()}})
+})
+app.get('/simulate', function(req, res){
+    res.sendFile(path.join(__dirname, sim.html))
+})
+app.post('/simulate', function(req, res){ // this route will simulate an earthquake
+    let newEarthquake = {magnitude: req.body.magnitude, lat: req.body.lat, lng: req.body.lng}
+    setInterval(function(){ // TODO: get user contacts
+        // get users
+        // from users get all close enough
+        // send notifications after filtering array of those close enough
+        sendNotification('earthquake', req.body.magnitude)
+    }, 30000)
+    res.status(200).send()
+}) 
+
 // debug route -- will return true if debugging
 app.post('/debug', function (req, res) {
     console.log('the debug route was called with post')

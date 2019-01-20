@@ -5,7 +5,7 @@ let Contact = new Schema({
     name: {type: String},
     phone: {type: String},
     lat: {type: Number},
-    lng: {type: Number}
+    lng: {type: Number},
 });
 
 
