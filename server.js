@@ -99,7 +99,8 @@ app.get('/user/contacts', function (req, res) { // this route will get all conta
     });
 })
 app.post('/user/contacts', function(req, res){ // this route will add a new contact into the contacts array 
-    console.log('contancts '+res.body)
+    console.log('contancts '+req.body)
+    req.body = JSON.parse(req.body)
     let newContact = new Contact({name: req.body.name, lat: req.body.lat, lng: req.body.lng, phone: req.body.phone})
     newContact.save(function(err){if(err){res.status(500).send()}else{res.status(202).send()}})
 })
@@ -112,7 +113,7 @@ app.post('/simulate', function(req, res){ // this route will simulate an earthqu
     setInterval(function(){ 
         Contact.find({}).then(function (users) {
             users
-                .filter(o=> distance(o.lat, o.lng, req.body.lat, req.body.lng) <= 160.0)
+                .filter(o=> distance(o.lat, o.lng, req.body.lat, req.body.lng) != 160.0)
                 .map(o=>{to=o.phone; sendNotification('earthquake', req.body.magnitude, o.name)})
         });
     
