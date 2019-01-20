@@ -47,7 +47,7 @@
 						<div id="map" style="width:100%;height:500px; margin-bottom:20px"></div>
 						</script>
 						<div style="visibility:hidden;position:fixed; top:0;left:0;right:0; bottom:0; background-color: #00330080;z-index: 5006;">
-							<form id="form_popup" style="visibility:hidden;z-index:500;position: fixed; top:50%; left: 50%;transform: translateX(-50%) translateY(-30%); background: #343748;padding: 20px;border-radius: 12px; box-shadow: 0px 4px 0 0px black;">
+							<form id="form_popup" style="visibility:hidden;z-index:500;position: fixed; top:50%; left: 50%;transform: translateX(-50%); background: #343748;padding: 20px;border-radius: 12px; box-shadow: 0px 4px 0 0px black;">
 								<div class="row gtr-uniform">
 									<div class="col-6 col-12-xsmall">
 										<label for="demo-name">Contact's Name</label>
@@ -59,7 +59,7 @@
 									</div>
 									<div class="col-12">
 										<ul class="actions">
-											<li><input type="submit" value="Add Alert" class="primary" id="submit" /> </li>
+											<li><button class="primary" id="submit" >Add Alert</button> </li>
 											<li><input type="reset" value="Reset" /></li>
 										</ul>
 									</div>
@@ -95,7 +95,7 @@
 		<script src="./Alexa/html5up-solid-state/assets/js/main.js"></script>
 		<script>
 			var email;
-			var contctList = [];
+			var contactList = [];
 			document.body.style.overflowY = "hidden";
 			$(document).keyup(function(event) {
 				if ($("#email_input").is(":focus") && event.key == "Enter") {
@@ -118,8 +118,8 @@
 				});
 				map.addListener('click', function(e) {
 					placeMarkerAndPanTo(e.latLng, map);
-					console.log(latLng);
-					contctList.push({Lat:latLng.latitude})
+					console.log(e.latLng);
+					contctList.push({lat:e.latLng.lat(),lng:e.latLng.lng()})
 				});
 			}
 
@@ -130,18 +130,24 @@
 					map: map
 				});
 				map.panTo(latLng);
-				document.scrollTo(0, 100000);
+				window.scrollTo({
+  					top: document.body.scrollHeight,
+  					left: 0,
+  					behavior: 'smooth'
+				});
 				document.body.style.overflowY = "hidden";
-				setTimeout(() => {
 					document.getElementById("form_popup").style.visibility = "visible";
-					$("#submit").onclick((e)=>{
+					$("#submit").click((e)=>{
 						e.preventDefault();
-					    contctList[contctList.length - 1].name = $("#name").val()
-			            contctList[contctList.length - 1].phone = $("#phone").val()
+			            contactList[contactList.length - 1].phone = $("#phone").val()
 						document.getElementById("form_popup").style.visibility = "hidden";
+						$.post('/user/contacts', JSON.stringify({name:$("#name").val(),phone:$("#phone").val(),lat:contactList[contactList.length - 1].lat,lng:contactList[contactList.length - 1].lng}))  .done(function() {
+    alert( "Added Alert Zone" );
+  })
+  .fail(function(e) {
+    console.warn(e)
+  })
 					});
-
-				}, 300)
 			}
 			
 
