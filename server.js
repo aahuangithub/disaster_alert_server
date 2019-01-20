@@ -25,12 +25,14 @@ const accountSid = process.env.twilioSid;
 const authToken = process.env.twilioToken; 
 const client = require('twilio')(accountSid, authToken); 
 
+//demo probably
+let to = ""
 app.post('/text', function(req, res){
     client.messages 
       .create({ 
          body: 'Hi, I noticed that there was recently an earthquake nearby. Are you okay? (Sent from Aaron\'s Alexa)', 
          from: '+14153001679',       
-         to: req.body.to 
+         to: to.length>0? to : req.body.to 
        }) 
       .then(message => console.log(message.sid)) 
       .done();
@@ -93,13 +95,14 @@ app.post('/user/contacts', function(req, res){ // this route will add a new cont
 app.get('/simulate', function(req, res){
     res.sendFile(path.join(__dirname, sim.html))
 })
+
 app.post('/simulate', function(req, res){ // this route will simulate an earthquake
     let newEarthquake = {magnitude: req.body.magnitude, lat: req.body.lat, lng: req.body.lng}
     setInterval(function(){ 
         Contact.find({}).then(function (users) {
             users
                 .filter(o=> distance(o.lat, o.lng, req.body.lat, req.body.lng) <= 160.0)
-                .map(o=>sendNotification('earthquake', req.body.magnitude, o.name))
+                .map(o=>{to=o.phone; sendNotification('earthquake', req.body.magnitude, o.name)})
         });
     
         // from users get all close enough
