@@ -3,7 +3,9 @@ let Parser = require('rss-parser');
 let parser = new Parser();
 var responseObject = { latestEventsArray: [] }
 
-request('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson', { json: true }, (err, res, body) => {
+module.export = {
+    getData:function(){
+        request('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson', { json: true }, (err, res, body) => {
     if (err) { return console.log(err); }
     for (var i = 0; i < body.features.length; i++) {
         if (new Date().valueOf() - body.features[i].properties.time < 1440000) {
@@ -27,6 +29,8 @@ request('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geoj
 
     });
 });
+    }
+}
 
 function isWithinRadius(radius, triggerLoc, eventLoc) {
     if (Math.sqrt(Math.pow(triggerLoc.Lat - eventLoc.lat, 2) + Math.pow(triggerLoc.Long - eventLoc.Long, 2)) <= radius) {
