@@ -137,7 +137,7 @@
 				});
 				document.body.style.overflowY = "hidden";
 					document.getElementById("form_popup").style.visibility = "visible";
-					$("#submit").onclick((e)=>{
+					$("#submit").click((e)=>{
 						e.preventDefault();
 			            contactList[contactList.length - 1].phone = $("#phone").val()
 						document.getElementById("form_popup").style.visibility = "hidden";
