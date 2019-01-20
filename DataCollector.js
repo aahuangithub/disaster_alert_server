@@ -16,7 +16,7 @@ request('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geoj
                     let contacts = body
                     contacts
                         .filter(o=> distance(o.lat, o.lng, feature.geometry.coordinates[0],  feature.geometry.coordinates[1]) <= 160.0)
-                        .map(o=>sendNotification('earthquake', properties.mag, o.name, properties.place.replace("km"," kilometers");))
+                        .map(o=>sendNotification('earthquake', properties.mag, o.name, properties.place.replace("km"," kilometers")))
                 })
         }
     }
