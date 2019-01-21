@@ -110,7 +110,7 @@ app.get('/simulate', function(req, res){
 
 app.post('/simulate', function(req, res){ // this route will simulate an earthquake
     let newEarthquake = {magnitude: req.body.magnitude, lat: req.body.lat, lng: req.body.lng}
-    setInterval(function(){ 
+    setTimeout(function(){ 
         Contact.find({}).then(function (users) {
             users
                 .map(o=>{try{to=o.phone; sendNotification('earthquake', req.body.magnitude, o.name)}catch(e){}})
